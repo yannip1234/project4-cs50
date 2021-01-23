@@ -1,5 +1,24 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+    <div class="container-fluid">
+        <div id="all-posts">
+            <h1>All Posts</h1>
+            <div id="new-post" class="card">
+                <form id="new-post-form" class="card-body">
+                    {% csrf_token %}
+                    <h2>New Post</h2>
+                    <div class="form-group">
+                        <textarea id="post-content" class="form-control" style="height: 100px;"></textarea>
+                        <button class="btn btn-primary mt-2 float-right" type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/app.js' %}"></script>
 {% endblock %}
