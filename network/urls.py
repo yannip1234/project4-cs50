@@ -10,4 +10,5 @@ urlpatterns = [
 
     # API
     path("post", views.post, name="post")
+    # path("post/<str:query>", views.all_posts, name="all_posts")
 ]

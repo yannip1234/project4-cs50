@@ -14,19 +14,28 @@ def index(request):
     return render(request, "network/index.html")
 
 
+def get_posts(request):
+    if request.GET.get('q') == "all":
+        posts = Post.objects.all()
+        posts = posts.order_by("-timestamp")
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse({"error": "Invalid Query."})
+
+
 @login_required
 def post(request):
+
     if request.method != "POST":
-        return JsonResponse({"error": "POST request required."}, status=400)
+        return get_posts(request)
+    else:
+        data = json.loads(request.body)
 
-    data = json.loads(request.body)
+        user = request.user
+        content = data.get("content", "")
 
-    user = request.user
-    content = data.get("content", "")
-
-    new_post = Post(user=user, content=content)
-    new_post.save()
-    return JsonResponse({"message": "Content posted successfully."}, status=201)
+        new_post = Post(user=user, content=content)
+        new_post.save()
+        return JsonResponse({"message": "Content posted successfully."}, status=201)
 
 
 def login_view(request):

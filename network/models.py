@@ -19,3 +19,14 @@ class Post(models.Model):
     likes = models.IntegerField(default=0)
     liked_users = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_users", null=True, default=None)
     comments = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="comments", null=True, default=None)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user": self.user.username,
+            "timestamp": self.timestamp.strftime("%b %-d %Y, %-I:%M %p"),
+            "content": self.content,
+            "likes": self.likes,
+            "liked_users": self.liked_users,
+            "comments": self.comments
+        }
